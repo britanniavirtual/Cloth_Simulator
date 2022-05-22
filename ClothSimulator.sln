@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1433
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClothSimulator", "ClothEngine.vcxproj", "{98451911-9FB5-477E-ABE5-686EAACF06AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NOTES", "NOTES", "{64AFCA35-CD51-45AC-845A-77DE9B946CFB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98451911-9FB5-477E-ABE5-686EAACF06AA}.Debug|x86.ActiveCfg = Debug|Win32
+		{98451911-9FB5-477E-ABE5-686EAACF06AA}.Debug|x86.Build.0 = Debug|Win32
+		{98451911-9FB5-477E-ABE5-686EAACF06AA}.Release|x86.ActiveCfg = Release|Win32
+		{98451911-9FB5-477E-ABE5-686EAACF06AA}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {00C037CE-EE8C-468A-9735-74D01B667ADE}
+	EndGlobalSection
+EndGlobal

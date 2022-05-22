@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="WavefrontObj.cpp">
+      <Filter>CORE</Filter>
+    </ClCompile>
+    <ClCompile Include="VectorUtilities.cpp">
+      <Filter>CORE</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>CORE</Filter>
+    </ClCompile>
+    <ClCompile Include="ClothEngine.cpp">
+      <Filter>CORE</Filter>
+    </ClCompile>
+    <ClCompile Include="Extern.cpp">
+      <Filter>MAIN</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>MAIN</Filter>
+    </ClCompile>
+    <ClCompile Include="TriangleIntersect.cpp">
+      <Filter>CORE</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="WavefrontObj.h">
+      <Filter>CORE</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorUtilities.h">
+      <Filter>CORE</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>CORE</Filter>
+    </ClInclude>
+    <ClInclude Include="ClothEngine.h">
+      <Filter>CORE</Filter>
+    </ClInclude>
+    <ClInclude Include="Extern.h">
+      <Filter>MAIN</Filter>
+    </ClInclude>
+    <ClInclude Include="JointHeader.h">
+      <Filter>MAIN</Filter>
+    </ClInclude>
+    <ClInclude Include="TriangleIntersect.h">
+      <Filter>CORE</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CORE">
+      <UniqueIdentifier>{8bce6be5-d160-41ed-a405-6caa59ba56fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MAIN">
+      <UniqueIdentifier>{5fcb793b-1843-4f06-b3d0-d98644d2df0b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
