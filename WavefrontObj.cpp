@@ -657,6 +657,7 @@ void WavefrontObj::loadQuadObj(string fileName)
 }
 
 //Load an obj file which consists of triangles
+//Supports triangle meshes only
 void WavefrontObj::loadObj(string fileName)
 {
 	cout << "Loading: " << fileName << "..." << endl;

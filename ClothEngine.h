@@ -188,13 +188,6 @@ public:
 	//[Compute the bounds of every cmesh triangle]
 	vector <MeshTriangle> CMeshTriangleBounds;
 	void computeCMeshTriangleBounds();
-	//[Store which faces of the cloth intersect with what]
-	int clothCollisionMap[1024][1024];
-
-	Triangle triangle2;
-	Triangle closestCMTriangle;
-	Vector3D closestCMPointToCloth;
-	float closestCMDist;
 
 	TurbulenceRegion turbulence[65536];//One turbulence region for each vertex
 	void computeTurbulence(float et);
@@ -203,16 +196,12 @@ public:
 
 	vector <Vector3D> getBoundedCMPoints(Vector3D p1, Vector3D p2, Vector3D p3);
 
-
 	Vector3D closestCMPoint;
 	Vector3D closestClothPoint;
 
 	const float constStep = 0.005;//0.005;//MAIN PHYSICS STEP AMOUNT
 
 	vector <Vector3D> getCMVertices(Bounds boundsA, int *voxelRef);
-
-	float lastDists1[65536];//Last distance above the threshold
-	float lastDists2[65536];
 
 	void stepClothWorld();
 
@@ -283,8 +272,6 @@ public:
 
 	const float dampingCoefficient = 200;
 	const float stiffnessCoefficient = 1;// Affects spring stiffness
-
-	const float maxVel = 1.0;//DELETE
 
 	Vector3D gravity;
 	float mass = 0.5f;

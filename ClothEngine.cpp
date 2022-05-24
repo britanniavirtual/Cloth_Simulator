@@ -1,7 +1,7 @@
 #include "JointHeader.h"
 
 //--------------------------------------
-//Defines
+//Cosntants
 const bool PINS_ENABLED = 1;
 const bool TRAVEL = 0;
 const bool WIND_ON = 1;
@@ -10,7 +10,6 @@ const bool COLLISION_ON = 1;
 const bool GRAVITY_ON = 1;
 const float TRAVEL_SPEED = 0.00026;
 const float WIND_SCALE = 0.7;
-const float COLLISION_DISTANCE = 0.03;
 const float RENDER_DELAY_COEFFICIENT = 1.0;
 //-------------------------------------
 

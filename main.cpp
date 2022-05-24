@@ -13,9 +13,10 @@ int selected_index = -1;
 
 int oldX = 0;
 int oldY = 0;
-float rX = 15, rY = 0;
+float rX = 15;
+float rY = 0;
 int state = 1;
-float dist= -23;
+float dist = -23;
 
 GLint viewport[4];
 GLdouble MV[16];
@@ -25,7 +26,7 @@ glm::vec3 Up=glm::vec3(0,1,0), Right, viewDir;
 
 LARGE_INTEGER frequency;//Ticks per second
 LARGE_INTEGER t1, t2;
-double frameTimeQP=0;
+double frameTimeQP = 0;
 float frameTime = 0;
 float startTime = 0;
 float fps = 0;
@@ -60,7 +61,8 @@ void OnMouseDown(int button, int s, int x, int y)
 	else
 		state = 1;
 
-	if(s==GLUT_UP) {
+	if(s==GLUT_UP)
+	{
 		selected_index= -1;
 		glutSetCursor(GLUT_CURSOR_INHERIT);
 	}

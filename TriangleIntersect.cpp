@@ -1,6 +1,4 @@
-#include "TriangleIntersect.h"
 #include "JointHeader.h"
-//Function prototypes
 
 //some 3D macros
 

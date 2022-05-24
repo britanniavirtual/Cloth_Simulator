@@ -95,7 +95,6 @@ public:
 		}
 
 		delete []originalIndices;
-
 		delete []originalVertices;
 		delete []originalNormals;
 		delete []originalUvs;
@@ -152,7 +151,7 @@ public:
 	void writeObj_UsingOriginalStructure(string ouputFileName);//Use the original Obj structure
 	void writeObjVerticesOnly(string fileName);
 
-	void loadObj(string FileName);
+	void loadObj(string FileName);//Load obj (triangle meshes only)
 	void loadQuadObj(string FileName);
 };
 
@@ -166,8 +165,8 @@ private:
 	void computeVertexGroups(WavefrontObj *obj);
 	void computeAverageNormals(WavefrontObj *obj);
 
-	int matching[16384][16];
-	int matchingCount[16384];
+	int matching[MAXINDEX][16];
+	int matchingCount[MAXINDEX];
 	int foundCount = 0;
-	Vector3D averageNormals[16384];//Computed Average for unique vertex
+	Vector3D averageNormals[MAXINDEX];//Computed Average for unique vertex
 };
