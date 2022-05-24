@@ -11,8 +11,9 @@ float currentTime = 0;
 double accumulator = timeStep;
 int selected_index = -1;
 
-int oldX=0, oldY=0;
-float rX=15, rY=0;
+int oldX = 0;
+int oldY = 0;
+float rX = 15, rY = 0;
 int state = 1;
 float dist= -23;
 

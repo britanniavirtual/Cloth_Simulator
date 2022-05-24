@@ -6,7 +6,7 @@ void WavefrontUtils::expandMesh(WavefrontObj *obj, float amount)
 
 	for (int a = 0; a < obj->vertexCount; a++)
 	{
-		Vector3D expand(averages[a].x, averages[a].y, averages[a].z);
+		Vector3D expand(averageNormals[a].x, averageNormals[a].y, averageNormals[a].z);
 		expand = vector3DUtils.setVectorMagnitude(expand, amount);
 
 		obj->vertices[a].x += expand.x;
@@ -52,6 +52,7 @@ void WavefrontUtils::computeVertexGroups(WavefrontObj * obj)
 
 			if (found)// && !found2)
 			{
+				//cout << a << " - " << b << endl;
 				matching[a][matchingCount[a]] = b;
 				matchingCount[a]++;
 				foundA = true;
@@ -142,18 +143,13 @@ void WavefrontUtils::computeAverageNormals(WavefrontObj* obj)
 		avgNormal.x /= curNormals.size() - 1;
 		avgNormal.y /= curNormals.size() - 1;
 		avgNormal.z /= curNormals.size() - 1;
-		//cout << curNormals.size() << " normals found." << endl;
-		//cout << "Avg. Normal: [" << avgNormal.x << " " << avgNormal.y << " " << avgNormal.z << "]" << endl << endl;
-		//------------------------
-
-		//cout << "a:" << a << endl;
 
 		for (int b = 0; b < matchingCount[a]; b++)
 		{
 			int curInt = matching[a][b];
 			for (int b = 0; b < matchingCount[a]; b++)
 			{
-				averages[curInt] = avgNormal;
+				averageNormals[curInt] = avgNormal;
 			}
 		}
 	}
@@ -190,9 +186,6 @@ void WavefrontObj::extractFaceElements(string data, int *i1, int *i2, int *i3, i
 	*i8 = elementsInt[7];
 	*i9 = elementsInt[8];
 }
-
-
-
 
 void WavefrontObj::extractFaceElementsQuad(string data, int *i1, int *i2, int *i3, int *i4, int *i5, int *i6, int *i7, int *i8, int *i9, int *i10, int *i11, int *i12)//<--- Extract face data to the struct in a single pass
 {
@@ -388,48 +381,6 @@ void WavefrontObj::writeObjVerticesOnly(string fileName)
 	myfile.close();
 }
 
-
-
-Vector3D WavefrontObj::computeCentroid()
-{
-	Vector3D centroid(0, 0, 0);
-
-	float avgX = 0;
-	float avgY = 0;
-	float avgZ = 0;
-
-	int n = 0;
-	//[Get collision mesh triangles]
-	for (int c = 0; c < indicesCount; c += 3)
-	{
-		int i1 = indices[c];
-		int i2 = indices[c + 1];
-		int i3 = indices[c + 2];
-
-		//[CM verts]:
-
-		avgX += vertices[i1].x;
-		avgY += vertices[i1].y;
-		avgZ += vertices[i1].z;
-
-		avgX += vertices[i2].x;
-		avgY += vertices[i2].y;
-		avgZ += vertices[i2].z;
-
-		avgX += vertices[i3].x;
-		avgY += vertices[i3].y;
-		avgZ += vertices[i3].z;
-
-		n += 3;
-	}
-
-	centroid.x = avgX / n;
-	centroid.y = avgY / n;
-	centroid.z = avgZ / n;
-
-	return centroid;
-}
-
 //Write a triangle obj mesh from the raw vertex / uv / normal data loaded
 void WavefrontObj::writeObj(string fileName)
 {
@@ -443,9 +394,26 @@ void WavefrontObj::writeObj(string fileName)
 
 	data << endl;
 
-	for (int a = 0; a < vertexCount; a+=3)
+	for (int a = 0; a < uvCount; a++)
 	{
-		data << " f " << a+1 << " " << a+2 << " " << a+3 << endl;
+		data << " vt " << uvs[a].y << " " << uvs[a].x << endl;
+	}
+
+	data << endl;
+
+	if (vertexCount != uvCount)
+	{
+		for (int a = 0; a < vertexCount; a += 3)
+		{
+			data << " f " << a + 1 << " " << a + 2 << " " << a + 3 << endl;
+		}
+	}
+	else
+	{
+		for (int a = 0; a < vertexCount; a += 3)
+		{
+			data << " f " << a + 1 << "/" << a + 1 << " " << a + 2 << "/" << a + 2 << " " << a + 3 << "/" << a + 3 << endl;
+		}
 	}
 
 	ofstream myfile;
@@ -766,7 +734,7 @@ void WavefrontObj::loadObj(string fileName)
 			vertStr += data[i];
 		}
 
-		/*
+		
 		//[(2) Read vt list]
 		//NB: Compute the vt strings first, update the floats in the model object when computing the faces
 
@@ -792,7 +760,7 @@ void WavefrontObj::loadObj(string fileName)
 		{
 			vtStrings[curVt] += data[i];
 		}
-		*/
+		
 
 		//[(3) Read vn list]
 
@@ -873,13 +841,9 @@ void WavefrontObj::loadObj(string fileName)
 		originalIndices[a][7] = i8 - 1;
 		originalIndices[a][8] = i9 - 1;
 
-		//cout << i1 << " " << i4 << " " << i7 << endl;
-		//system("PAUSE");
-
 		originalIndicesCount++;
 
-		//Vertices
-		//This is affected by the preceding statements
+		//[Vertices]
 		VEC3 curVert1 = curVerts[i1 - 1];
 		VEC3 curVert2 = curVerts[i4 - 1];
 		VEC3 curVert3 = curVerts[i7 - 1];
@@ -889,7 +853,6 @@ void WavefrontObj::loadObj(string fileName)
 		vertices[vertexCount].x = curVert1.x;
 		vertices[vertexCount].y = curVert1.y;
 		vertices[vertexCount].z = curVert1.z;
-
 		vertexCount++;
 
 		vertices[vertexCount].x = curVert2.x;
@@ -910,7 +873,7 @@ void WavefrontObj::loadObj(string fileName)
 		uvs[uvCount].x = uv1.y;
 		uvs[uvCount].y = uv1.x;
 		uvCount++;
-
+		
 		uvs[uvCount].x = uv2.y;
 		uvs[uvCount].y = uv2.x;
 		uvCount++;
@@ -918,6 +881,7 @@ void WavefrontObj::loadObj(string fileName)
 		uvs[uvCount].x = uv3.y;
 		uvs[uvCount].y = uv3.x;
 		uvCount++;
+		
 
 		//[Normals]
 		VEC3 curNormal1 = curVns[i3 - 1];

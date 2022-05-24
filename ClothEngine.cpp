@@ -198,8 +198,8 @@ void ClothWorld::initClothPatch()
 	computeCentroid();
 
 	//NxN vertices for the cloth patch
-	numX = 20;
-	numY = 20;
+	numX = 32;
+	numY = 32;
 
 	vertexCountCloth = (numX + 1) * (numY + 1);
 
@@ -770,7 +770,7 @@ bool ClothWorld::closestPositionToCM_4(int vertN, Vector3D *collisionPoint, Tria
 		for (int b = 0; b < cTris.size(); b++)
 		{
 			//NB: Vertices to test for collision
-			float point1[3] = { VertexPos[clothNodes[a]].x,  VertexPos[clothNodes[a]].y,  VertexPos[clothNodes[a]].z };//Collsion mesh verts
+			float point1[3] = { VertexPos[clothNodes[a]].x,      VertexPos[clothNodes[a]].y,      VertexPos[clothNodes[a]].z };//Collsion mesh verts
 			float point2[3] = { VertexPos[clothNodes[a + 1]].x,  VertexPos[clothNodes[a + 1]].y,  VertexPos[clothNodes[a + 1]].z };
 			float point3[3] = { VertexPos[clothNodes[a + 2]].x,  VertexPos[clothNodes[a + 2]].y,  VertexPos[clothNodes[a + 2]].z };
 

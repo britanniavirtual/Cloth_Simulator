@@ -1,5 +1,14 @@
 #pragma once
 
+#define MAXINDEX 100000
+
+class VEC2
+{
+public:
+	float x;
+	float y;
+};
+
 class VEC3
 {
 public:
@@ -17,50 +26,43 @@ public:
 	float w;
 };
 
-class VEC2
-{
-public:
-	float x;
-	float y;
-};
-
 class WavefrontObj
 {
 public:
 
 	WavefrontObj()
 	{
-		vertices = new VEC3[1000000];
-		verticesQuads = new VEC3[1000000];
-		normals = new VEC3[1000000];
-		indices = new int[1000000];
-		uvs = new VEC2[1000000];
-		vertStrings = new string[1000000];
-		faceStrings = new string[1000000];
-		vtStrings = new string[1000000];
-		faceTextures = new string[1000000];
+		vertices = new VEC3[MAXINDEX];
+		verticesQuads = new VEC3[MAXINDEX];
+		normals = new VEC3[MAXINDEX];
+		indices = new int[MAXINDEX];
+		uvs = new VEC2[MAXINDEX];
+		vertStrings = new string[MAXINDEX];
+		faceStrings = new string[MAXINDEX];
+		vtStrings = new string[MAXINDEX];
+		faceTextures = new string[MAXINDEX];
 		mtlNames = new string[64];
-		curVerts = new VEC3[1000000];
-		curVns = new VEC3[1000000];
+		curVerts = new VEC3[MAXINDEX];
+		curVns = new VEC3[MAXINDEX];
 
 		//Orig indices
-		originalIndices = new int*[1000000];
-		for (int i = 0; i < 1000000; i++)
+		originalIndices = new int*[MAXINDEX];
+		for (int i = 0; i < MAXINDEX; i++)
 		{
 			originalIndices[i] = new int[9];
 		}
 
 		//Orig indices
-		originalIndicesQuads = new int*[1000000];
-		for (int i = 0; i < 1000000; i++)
+		originalIndicesQuads = new int*[MAXINDEX];
+		for (int i = 0; i < MAXINDEX; i++)
 		{
 			originalIndicesQuads[i] = new int[12];
 		}
 
 
-		originalVertices = new VEC3[1000000];
-		originalNormals = new VEC3[1000000];
-		originalUvs = new VEC2[1000000];
+		originalVertices = new VEC3[MAXINDEX];
+		originalNormals = new VEC3[MAXINDEX];
+		originalUvs = new VEC2[MAXINDEX];
 	}
 
 	~WavefrontObj()
@@ -80,14 +82,14 @@ public:
 		delete []curVerts;
 		delete []curVns;
 
-		for (int i = 0; i < 1000000; i++)
+		for (int i = 0; i < MAXINDEX; i++)
 		{
 			delete[]originalIndicesQuads[i];
 		}
 
 		delete[]originalIndicesQuads;
 
-		for (int i = 0; i < 1000000; i++)
+		for (int i = 0; i < MAXINDEX; i++)
 		{
 			delete []originalIndices[i];
 		}
@@ -152,8 +154,6 @@ public:
 
 	void loadObj(string FileName);
 	void loadQuadObj(string FileName);
-
-	Vector3D computeCentroid();
 };
 
 
@@ -169,5 +169,5 @@ private:
 	int matching[16384][16];
 	int matchingCount[16384];
 	int foundCount = 0;
-	Vector3D averages[16384];//Computed Average for unique vertex
+	Vector3D averageNormals[16384];//Computed Average for unique vertex
 };
