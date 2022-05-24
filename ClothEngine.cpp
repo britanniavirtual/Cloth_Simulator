@@ -1,16 +1,17 @@
 #include "JointHeader.h"
 
 //--------------------------------------
-//Cosntants
+//Constants
 const bool PINS_ENABLED = 1;
 const bool TRAVEL = 0;
+const float TRAVEL_SPEED = 0.00026;
 const bool WIND_ON = 1;
-const bool TURBULENCE_ON = 0;
+const bool TURBULENCE_ON = 1;
 const bool COLLISION_ON = 1;
 const bool GRAVITY_ON = 1;
-const float TRAVEL_SPEED = 0.00026;
 const float WIND_SCALE = 0.7;
 const float RENDER_DELAY_COEFFICIENT = 1.0;
+const float SPRING_STIFFNESS = 1.0;//1.0 is max stiffness
 //-------------------------------------
 
 void ClothWorld::loadCollisionMesh(string filename)
@@ -505,14 +506,9 @@ void ClothWorld::computeWind(float et)
 		strengthTime = 0;
 	}
 	
-	//cout << curAngle1 << " " << curAngle2 << endl;
-	//curAngle1 *= 0.017;
-	//curAngle2 *= 0.017;
-
 	windVec = vector3DUtils.OrbitalPosition(curAngle1 * 0.017, curAngle2 * 0.017, Vector3D(0, 0, 0));
 	Vector3D newWind(windVec.x, windVec.y, windVec.z);
 	newWind *= windStrength;
-
 
 	environmentWind = newWind;
 }
@@ -557,10 +553,6 @@ void ClothWorld::springDynamics()
 		float dist = vector3DUtils.length(deltaP);
 
 	
-		//[Frame delay here seems to effect it positively]
-		//deltaP *= frameDelay * 1000;
-
-		//
 		if (dist > springs[i].rest_length)
 		{
 			dist -= (springs[i].rest_length);
@@ -568,25 +560,9 @@ void ClothWorld::springDynamics()
 
 			deltaP = vector3DUtils.normalize(deltaP);
 
-			//NB: Multiplying deltaP by 25 increases stiffness (Less flex) but it still bounces everywhere. Add damping to correct.
-
-			//[Error: If deltaP coefficent too high then it explodes]
-			//************If its too low then its too loose. How to fix?
-
-			deltaP *= dist;/// *0.5 * 250;// / 10 // *frameDelay * 10;
-
-			//cout << deltaP.x << " , " << deltaP.y << " , " << deltaP.z << endl;
-
-			//deltaP.x = utils.clamp(deltaP.x, 1, -1);
-			//deltaP.y = utils.clamp(deltaP.y, 1, -1);
-			//deltaP.z = utils.clamp(deltaP.z, 1, -1);
-
-			///if (abs(vector3DUtils.length(deltaP) > 1.0))
-			//{
-			//	continue;
-			//}
-
-			deltaP *= 10;// * 10 works			
+			deltaP *= dist;
+			deltaP *= 10;
+			deltaP *= SPRING_STIFFNESS;
 
 			//[Additional For hinge - Start]
 			//Purpose is to update: VertexVel, for use in the main step
@@ -681,8 +657,8 @@ void ClothWorld::computeForces(float et)
 		Vector3D deltaV = v1 - v2;
 		float dist = vector3DUtils.length(deltaP);
 
-		float leftTerm = -springs[i].Ks * (dist - springs[i].rest_length);
-		float rightTerm = springs[i].Kd * vector3DUtils.dot(deltaV, deltaP) / dist;
+		float leftTerm = -springs[i].Ks * (dist - springs[i].rest_length) * SPRING_STIFFNESS;
+		float rightTerm = springs[i].Kd * vector3DUtils.dot(deltaV, deltaP) / dist * SPRING_STIFFNESS;
 
 		Vector3D curSpringForce = vector3DUtils.normalize(deltaP) * (leftTerm + rightTerm) * frameDelay * 250;// DELETE FRAME DELAY
 
@@ -804,9 +780,6 @@ bool started = false;
 void ClothWorld::stepClothWorld()
 {
 	float elapsedTime = ((clock() - lastTime) / 1000);
-	//cout << elapsedTime << endl;
-
-
 
 	worldTime += elapsedTime;
 	lastTime = clock();
@@ -814,8 +787,6 @@ void ClothWorld::stepClothWorld()
 	float deltaTimeMass = elapsedTime;// *0.1;// 0.01 needs to scale with framerate drop was 0.1
 	frameDelay = elapsedTime;
 	computeWind(elapsedTime);
-
-
 
 	//[Two main cloth computation functions]:
 	computeForces(elapsedTime);
@@ -1055,22 +1026,9 @@ Vector3D ClothWorld::computeCentroid()
 		n += 3;
 	}
 
-	/*
-	//coordinate of the vertices
-	float x1 = 1, x2 = 3, x3 = 6;
-	float y1 = 2, y2 = -4, y3 = -7;
-
-	//Formula to calculate centroid
-	float x = (x1 + x2 + x3) / 3;
-	float y = (y1 + y2 + y3) / 3;
-	*/
-
 	centroid.x = avgX / n;
 	centroid.y = avgY / n;
 	centroid.z = avgZ / n;
-
-	//cout << centroid.x << " " << centroid.y << " " << centroid.z << endl;
-	//system("PAUSE");
 
 	return centroid;
 }
